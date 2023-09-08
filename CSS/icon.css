@@ -1,0 +1,17 @@
+.image-slider {
+    position: relative;
+    width: 400px; /* Укажите ширину блока по вашему желанию */
+     /* Укажите высоту блока по вашему желанию */
+    overflow: hidden;
+  }
+  
+  .slider-wrapper {
+    display: flex;
+    transition: transform 0.3s ease; /* Добавьте плавную анимацию прокрутки */
+  }
+  
+  .slider-wrapper img {
+    width: 100%;
+    height: auto;
+  }
+  
