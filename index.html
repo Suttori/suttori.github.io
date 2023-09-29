@@ -24,43 +24,25 @@
                         id: item.id,
                         user_id: item.user_id,
                         name: item.name,
-                        title: item.title,
+                        description: item.description,
                         stickersUlr: item.stickersUlr,
-                        sticker_format: item.sticker_format
+                        stickerFormat: item.stickerFormat
                     };
                 });
 
 
+                // Найдите контейнер .catalog
+                const catalogContainer = document.querySelector('.catalog');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                // Найдите контейнер .swiper
-                const swiperContainer = document.querySelector('.swiper');
-
-                // Переберите данные из массива
+                // Переберите данные из массива и создайте элементы
                 objectsArray.forEach(item => {
-
-
                     // Создайте контейнер .catalog__element
                     const catalogElement = document.createElement('div');
                     catalogElement.classList.add('catalog__element', 'element');
 
-
+                    // Шапка пака
+                    const elementHeader = document.createElement('div');
+                    elementHeader.classList.add('element__header');
 
                     // Название пака
                     const headerLeft = document.createElement('div');
@@ -71,36 +53,104 @@
                     headerName.textContent = item.name;
                     headerLeft.appendChild(headerName);
 
+                    // Контейнер с хештегами
+                    const headerDescription = document.createElement('div');
+                    headerDescription.classList.add('element__header__description');
+                    const description = document.createElement('span');
+                    description.classList.add('element_header__tag');
+                    description.textContent = item.description;
+                    headerDescription.appendChild(description);
 
+                    // Блок с кнопкой добавить
+                    const headerRight = document.createElement('div');
+                    headerRight.classList.add('element__header__right');
+                    const headerButton = document.createElement('div');
+                    headerButton.classList.add('header__button');
+                    const headerButtonAdd = document.createElement('a');
+                    headerButtonAdd.classList.add('header__button__add');
+                    headerButtonAdd.textContent = 'Добавить'
+                    headerButtonAdd.href = '#';
+                    headerButton.appendChild(headerButtonAdd);
+                    headerRight.appendChild(headerButton);
 
+                    // Добавьте элементы шапки в контейнер шапки
+                    elementHeader.appendChild(headerLeft);
+                    elementHeader.appendChild(headerDescription);
+                    elementHeader.appendChild(headerRight);
 
+                    // Добавьте шапку пака в контейнер пака
+                    catalogElement.appendChild(elementHeader);
 
+                    // Контейнер со стикерами
+                    const swiper = document.createElement('div');
+                    swiper.classList.add('swiper');
+                    // Контейнер с первым паком
+                    const swiperContainer = document.createElement('div');
+                    swiperContainer.classList.add('swiper__container');
 
-
-
-
-
-
-                    // Создайте контейнер .swiper__container
-                    const swiperContainerElement = document.createElement('div');
-                    swiperContainerElement.classList.add('swiper__container');
-                    // Переберите URL стикеров в объекте
+                    // Перебираем стикеры в текущем объекте
                     item.stickersUlr.forEach(stickerUrl => {
-                        // Создайте элемент <img>
-                        const imgElement = document.createElement('img');
-                        imgElement.src = stickerUrl;
-                        // Создайте контейнер .swiper__element
+                        // Контейнер с отдельным стикером
                         const swiperElement = document.createElement('div');
                         swiperElement.classList.add('swiper__element');
-                        // Добавьте элемент <img> в .swiper__element
-                        swiperElement.appendChild(imgElement);
-                        // Добавьте .swiper__element в .swiper__container
-                        swiperContainerElement.appendChild(swiperElement);
+
+                        // Стикер
+                        const swiperElementStick = document.createElement('div');
+                        swiperElementStick.classList.add('swiper__element__stick');
+
+                        const imgElement = document.createElement('img');
+                        imgElement.src = stickerUrl;
+
+                        swiperElementStick.appendChild(imgElement);
+                        swiperElement.appendChild(swiperElementStick);
+
+                        // Добавляем контейнер с отдельным стикером в контейнер с паком
+                        swiperContainer.appendChild(swiperElement);
                     });
 
-                    // Добавьте .swiper__container в .swiper
-                    swiperContainer.appendChild(swiperContainerElement);
+                    // Добавляем контейнер с паком и всеми его стикерами в основной контейнер
+                    swiper.appendChild(swiperContainer);
+                    catalogElement.appendChild(swiper);
+
+                    // Контейнер с реакциями
+                    const containerReactions = document.createElement('div');
+                    containerReactions.classList.add('container__reactions');
+                    const reactionsDiv = document.createElement('div');
+                    const likeButton = document.createElement('button');
+                    likeButton.classList.add('like');
+                    const likeImage = document.createElement('img');
+                    likeImage.src = 'img/thumbs-up.png';
+                    likeImage.alt = 'like';
+                    const likeText = document.createTextNode('количество лайков');
+                    likeButton.appendChild(likeImage);
+                    likeButton.appendChild(likeText);
+                    const dislikeButton = document.createElement('button');
+                    dislikeButton.classList.add('dislike');
+                    const dislikeImage = document.createElement('img');
+                    dislikeImage.src = 'img/thumbs-down.png';
+                    dislikeImage.alt = 'dislike';
+                    const dislikeText = document.createTextNode('количество дизлайков');
+                    dislikeButton.appendChild(dislikeImage);
+                    dislikeButton.appendChild(dislikeText);
+                    reactionsDiv.appendChild(likeButton);
+                    reactionsDiv.appendChild(dislikeButton);
+                    containerReactions.appendChild(reactionsDiv);
+
+                    // Добавьте контейнер с реакциями в контейнер пака
+                    catalogElement.appendChild(containerReactions);
+
+                    // Футер контейнера со стикерами
+                    const elementFooter = document.createElement('div');
+                    elementFooter.classList.add('element__footer');
+
+                    // Добавьте контейнер пака в контейнер каталога
+                    catalogContainer.appendChild(catalogElement);
                 });
+
+
+
+
+
 
 
 
@@ -164,14 +214,10 @@
                         <!-- Название пака -->
                         <div class="element__header__left">
                             <!-- название пака ссылкой -->
-                            <a class="element__header__name" href="#"></a>
+                            <!-- <a class="element__header__name" href="#"></a> -->
                             <!-- контейнер с хештегами -->
                             <div class="element__header__description">
                                 <span class="element_header__tag">пример_хештега_1</span>
-                                <span>пример_хештега_2</span>
-                                <span>пример_хештега_3</span>
-                                <span>пример_хештега_4</span>
-                                <span>пример_хештега_5</span>
                             </div>
                         </div>
                         <!-- блок с кнопкой добавить -->
